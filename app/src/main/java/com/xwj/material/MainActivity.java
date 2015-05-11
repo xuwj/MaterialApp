@@ -2,11 +2,24 @@ package com.xwj.material;
 
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
+import butterknife.InjectView;
 
 public class MainActivity extends ActionBarActivity {
+    @InjectView(R.id.toolbar)
+    private Toolbar mToolbar;
+    @InjectView(R.id.ivLogo)
+    private ImageView mLogoIv;
+    @InjectView(R.id.rvFeed)
+    private RecyclerView mFeedRv;
+    @InjectView(R.id.btnCreate)
+    ImageButton mCreateImgBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

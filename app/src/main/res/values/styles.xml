@@ -1,8 +1,13 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- 标题栏 -->
+        <item name="colorPrimary">@color/style_color_primary</item>
+        <!-- 状态栏 -->
+        <item name="colorPrimaryDark">@color/style_color_primary_dark</item>
+        <!--theme UI controls like checkboxes and text fields-->
+        <item name="colorAccent">@color/style_color_accent</item>
     </style>
 
 </resources>
