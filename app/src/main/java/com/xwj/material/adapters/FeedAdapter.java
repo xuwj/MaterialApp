@@ -28,6 +28,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHo
 
     public FeedAdapter(Context context) {
         this.mContext = context;
+
     }
 
     @Override

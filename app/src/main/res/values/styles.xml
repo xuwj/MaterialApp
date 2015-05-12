@@ -2,14 +2,19 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="android:windowNoTitle">true</item>
+        <!--<item name="windowActionBar">false</item>
+        <item name="android:windowNoTitle">true</item>-->
         <!-- 标题栏 -->
         <item name="colorPrimary">@color/style_color_primary</item>
         <!-- 状态栏 -->
         <item name="colorPrimaryDark">@color/style_color_primary_dark</item>
         <!--theme UI controls like checkboxes and text fields-->
         <item name="colorAccent">@color/style_color_accent</item>
+    </style>
+
+    <style name="AppTheme.CommentsActivity" parent="AppTheme">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsTranslucent">true</item>
     </style>
 
 </resources>

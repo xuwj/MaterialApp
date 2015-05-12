@@ -2,6 +2,7 @@ package com.xwj.material;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
@@ -137,6 +138,12 @@ public class MainActivity extends ActionBarActivity implements FeedAdapter.OnFee
 
     @Override
     public void onCommentsClick(View v, int position) {
-        Toaster.toast("---" + position);
+        //Toaster.toast("---" + position);
+        final Intent intent = new Intent(this, CommentsActivity.class);
+        int[] startingLocation = new int[2];
+        v.getLocationOnScreen(startingLocation);
+        intent.putExtra(CommentsActivity.ARG_DRAWING_START_LOCATION, startingLocation[1]);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
     }
 }

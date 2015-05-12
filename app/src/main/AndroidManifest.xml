@@ -19,7 +19,8 @@
         </activity>
         <activity
             android:name=".CommentsActivity"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme.CommentsActivity"/>
 
     </application>
 
