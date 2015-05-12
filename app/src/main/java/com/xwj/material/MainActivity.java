@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -17,11 +18,12 @@ import android.widget.ImageView;
 import com.xwj.material.adapters.FeedAdapter;
 import com.xwj.material.component.Constants;
 import com.xwj.material.utils.PhoneUtils;
+import com.xwj.material.views.Toaster;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements FeedAdapter.OnFeedItemClickListener {
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
     @InjectView(R.id.ivLogo)
@@ -63,6 +65,7 @@ public class MainActivity extends ActionBarActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mFeedRv.setLayoutManager(linearLayoutManager);
         feedAdapter = new FeedAdapter(this);
+        feedAdapter.setOnFeedItemClickListener(this);
         mFeedRv.setAdapter(feedAdapter);
     }
 
@@ -96,7 +99,7 @@ public class MainActivity extends ActionBarActivity {
     private void startIntroAnimation() {
         mCreateImgBtn.setTranslationY(2 * getResources().getDimensionPixelOffset(R.dimen.btn_fab_size));
 
-        int actionbarSize = PhoneUtils.dip2px(this,56);
+        int actionbarSize = PhoneUtils.dip2px(this, 56);
         mToolbar.setTranslationY(-actionbarSize);
         mLogoIv.setTranslationY(-actionbarSize);
         mInboxMenuItem.getActionView().setTranslationY(-actionbarSize);
@@ -130,5 +133,10 @@ public class MainActivity extends ActionBarActivity {
                 .setDuration(Constants.ANIM_DURATION_FAB)
                 .start();
         feedAdapter.setUpdateItems();
+    }
+
+    @Override
+    public void onCommentsClick(View v, int position) {
+        Toaster.toast("---" + position);
     }
 }

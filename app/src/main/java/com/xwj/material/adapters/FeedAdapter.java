@@ -18,11 +18,13 @@ import butterknife.InjectView;
 /**
  * Created by user on 2015/5/12.
  */
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHolder> {
+public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHolder>  implements View.OnClickListener{
     private static final int ANIMATED_ITEMS_COUNT = 2;
     private Context mContext;
     private int mLastAnimatedPosition = -1;
     private int mItemsCount = 0;
+
+    private OnFeedItemClickListener onFeedItemClickListener;
 
     public FeedAdapter(Context context) {
         this.mContext = context;
@@ -44,6 +46,8 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHo
             holder.feedCenterSiv.setImageResource(R.drawable.img_feed_center_2);
             holder.feedBottomIv.setImageResource(R.drawable.img_feed_bottom_2);
         }
+        holder.feedBottomIv.setOnClickListener(this);
+        holder.feedBottomIv.setTag(position);
     }
 
     @Override
@@ -75,6 +79,19 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHo
         }
     }
 
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.iv_feed_bottom) {
+            if (onFeedItemClickListener != null) {
+                onFeedItemClickListener.onCommentsClick(v, (Integer) v.getTag());
+            }
+        }
+    }
+
+    public void setOnFeedItemClickListener(OnFeedItemClickListener onFeedItemClickListener) {
+        this.onFeedItemClickListener = onFeedItemClickListener;
+    }
+
     public static class CellFeedViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.iv_feed_center)
         SquaredImageView feedCenterSiv;
@@ -85,5 +102,9 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHo
             super(itemView);
             ButterKnife.inject(this, itemView);
         }
+    }
+
+    public interface OnFeedItemClickListener {
+        public void onCommentsClick(View v, int position);
     }
 }
