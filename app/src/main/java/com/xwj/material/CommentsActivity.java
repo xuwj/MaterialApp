@@ -3,6 +3,7 @@ package com.xwj.material;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.os.Bundle;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -89,10 +90,11 @@ public class CommentsActivity extends ActionBarActivity {
      * lv开始动画
      */
     private void startIntroAnimation() {
+        // 动画过程中禁用
+        ViewCompat.setElevation(mToolbarTl, 0);
         mContentRootLl.setScaleY(0.1f);
         mContentRootLl.setPivotY(mDrawingStartLocation);
         mAddCommentLl.setTranslationY(100);
-
         mContentRootLl.animate()
                 .scaleY(1)
                 .setDuration(200)
@@ -100,6 +102,7 @@ public class CommentsActivity extends ActionBarActivity {
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
+                        ViewCompat.setElevation(mToolbarTl, PhoneUtils.dip2px(CommentsActivity.this, 8));
                         animateContent();
                     }
                 })
@@ -136,6 +139,7 @@ public class CommentsActivity extends ActionBarActivity {
      */
     @Override
     public void onBackPressed() {
+        ViewCompat.setElevation(mToolbarTl, 0);
         mContentRootLl.animate().translationY(PhoneUtils.getScreenHeight(this))
                 .setDuration(200).setListener(new AnimatorListenerAdapter() {
             @Override
