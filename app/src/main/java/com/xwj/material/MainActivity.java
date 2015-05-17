@@ -3,9 +3,9 @@ package com.xwj.material;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
@@ -19,7 +19,6 @@ import android.widget.ImageView;
 import com.xwj.material.adapters.FeedAdapter;
 import com.xwj.material.component.Constants;
 import com.xwj.material.utils.PhoneUtils;
-import com.xwj.material.views.Toaster;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -144,6 +143,7 @@ public class MainActivity extends ActionBarActivity implements FeedAdapter.OnFee
         v.getLocationOnScreen(startingLocation);
         intent.putExtra(CommentsActivity.ARG_DRAWING_START_LOCATION, startingLocation[1]);
         startActivity(intent);
+        //屏蔽了MainActivity的退出效果，以及CommentsActivity的进入效果。
         overridePendingTransition(0, 0);
     }
 }

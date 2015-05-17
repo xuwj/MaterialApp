@@ -12,9 +12,11 @@ import android.view.MenuItem;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.xwj.material.adapters.CommentsAdapter;
+import com.xwj.material.utils.PhoneUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -34,6 +36,8 @@ public class CommentsActivity extends ActionBarActivity {
     RecyclerView mCommentsRv;
     @InjectView(R.id.llAddComment)
     LinearLayout mAddCommentLl;
+    @InjectView(R.id.et_comment_content)
+    EditText mCommentContentEt;
 
     private CommentsAdapter mCommentsAdapter;
     private int mDrawingStartLocation;
@@ -81,6 +85,9 @@ public class CommentsActivity extends ActionBarActivity {
         });
     }
 
+    /**
+     * lv开始动画
+     */
     private void startIntroAnimation() {
         mContentRootLl.setScaleY(0.1f);
         mContentRootLl.setPivotY(mDrawingStartLocation);
@@ -117,11 +124,25 @@ public class CommentsActivity extends ActionBarActivity {
 
     @OnClick(R.id.btnSendComment)
     public void onSendCommentClick() {
+        mCommentContentEt.setText("");
         mCommentsAdapter.addItem();
         mCommentsAdapter.setAnimationsLocked(false);
         mCommentsAdapter.setDelayEnterAnimation(false);
         mCommentsRv.smoothScrollBy(0, mCommentsRv.getChildAt(0).getHeight() * mCommentsAdapter.getItemCount());
     }
 
-
+    /**
+     * 退出动画监听
+     */
+    @Override
+    public void onBackPressed() {
+        mContentRootLl.animate().translationY(PhoneUtils.getScreenHeight(this))
+                .setDuration(200).setListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                CommentsActivity.super.onBackPressed();
+                overridePendingTransition(0, 0);
+            }
+        });
+    }
 }
