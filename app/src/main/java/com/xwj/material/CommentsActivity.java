@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.DecelerateInterpolator;
@@ -76,6 +77,8 @@ public class CommentsActivity extends ActionBarActivity {
 
         mCommentsAdapter = new CommentsAdapter(this);
         mCommentsRv.setAdapter(mCommentsAdapter);
+        // 消除滚动到顶部或底部时的边框
+        mCommentsRv.setOverScrollMode(View.OVER_SCROLL_NEVER);
         mCommentsRv.setOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

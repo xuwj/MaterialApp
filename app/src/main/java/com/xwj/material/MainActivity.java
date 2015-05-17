@@ -46,6 +46,8 @@ public class MainActivity extends ActionBarActivity implements FeedAdapter.OnFee
         setupFeed();
         if (savedInstanceState == null) {
             pendingIntroAnimation = true;
+        } else {
+            feedAdapter.setUpdateItems(false);
         }
     }
 
@@ -62,7 +64,12 @@ public class MainActivity extends ActionBarActivity implements FeedAdapter.OnFee
     }
 
     private void setupFeed() {
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this) {
+            @Override
+            protected int getExtraLayoutSpace(RecyclerView.State state) {
+                return 300;
+            }
+        };
         mFeedRv.setLayoutManager(linearLayoutManager);
         feedAdapter = new FeedAdapter(this);
         feedAdapter.setOnFeedItemClickListener(this);
@@ -132,7 +139,7 @@ public class MainActivity extends ActionBarActivity implements FeedAdapter.OnFee
                 .setStartDelay(300)
                 .setDuration(Constants.ANIM_DURATION_FAB)
                 .start();
-        feedAdapter.setUpdateItems();
+        feedAdapter.setUpdateItems(true);
     }
 
     @Override
