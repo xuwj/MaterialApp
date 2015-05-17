@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.DecelerateInterpolator;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.xwj.material.R;
@@ -18,7 +19,7 @@ import butterknife.InjectView;
 /**
  * Created by user on 2015/5/12.
  */
-public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHolder>  implements View.OnClickListener{
+public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHolder> implements View.OnClickListener {
     private static final int ANIMATED_ITEMS_COUNT = 2;
     private Context mContext;
     private int mLastAnimatedPosition = -1;
@@ -43,13 +44,13 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHo
         runEnterAnimation(holder.itemView, position);
         if (position % 2 == 0) {
             holder.feedCenterSiv.setImageResource(R.drawable.img_feed_center_1);
-            holder.feedBottomIv.setImageResource(R.drawable.img_feed_bottom_1);
+            //holder.btnComments.setImageResource(R.drawable.img_feed_bottom_1);
         } else {
             holder.feedCenterSiv.setImageResource(R.drawable.img_feed_center_2);
-            holder.feedBottomIv.setImageResource(R.drawable.img_feed_bottom_2);
+            //holder.btnComments.setImageResource(R.drawable.img_feed_bottom_2);
         }
-        holder.feedBottomIv.setOnClickListener(this);
-        holder.feedBottomIv.setTag(position);
+        holder.btnComments.setOnClickListener(this);
+        holder.btnComments.setTag(position);
     }
 
     @Override
@@ -84,7 +85,7 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHo
 
     @Override
     public void onClick(View v) {
-        if (v.getId() == R.id.iv_feed_bottom) {
+        if (v.getId() == R.id.btnComments) {
             if (onFeedItemClickListener != null) {
                 onFeedItemClickListener.onCommentsClick(v, (Integer) v.getTag());
             }
@@ -98,8 +99,12 @@ public class FeedAdapter extends RecyclerView.Adapter<FeedAdapter.CellFeedViewHo
     public static class CellFeedViewHolder extends RecyclerView.ViewHolder {
         @InjectView(R.id.iv_feed_center)
         SquaredImageView feedCenterSiv;
-        @InjectView(R.id.iv_feed_bottom)
+        //@InjectView(R.id.iv_feed_bottom)
         ImageView feedBottomIv;
+        @InjectView(R.id.btnComments)
+        ImageButton btnComments;
+        @InjectView(R.id.btnLike)
+        ImageButton btnLike;
 
         public CellFeedViewHolder(View itemView) {
             super(itemView);
