@@ -8,17 +8,20 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AnimationUtils;
 import android.view.animation.DecelerateInterpolator;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.xwj.material.adapters.CommentsAdapter;
 import com.xwj.material.utils.PhoneUtils;
+import com.xwj.material.views.SendCommentButton;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,7 +31,7 @@ import butterknife.OnClick;
  * 评论界面
  * Created by user on 2015/5/12.
  */
-public class CommentsActivity extends ActionBarActivity {
+public class CommentsActivity extends ActionBarActivity implements SendCommentButton.OnSendClickListener {
     public static final String ARG_DRAWING_START_LOCATION = "arg_drawing_start_location";
     @InjectView(R.id.toolbar)
     Toolbar mToolbarTl;
@@ -40,6 +43,8 @@ public class CommentsActivity extends ActionBarActivity {
     LinearLayout mAddCommentLl;
     @InjectView(R.id.et_comment_content)
     EditText mCommentContentEt;
+    @InjectView(R.id.btnSendComment)
+    SendCommentButton btnSendComment;
 
     private CommentsAdapter mCommentsAdapter;
     private int mDrawingStartLocation;
@@ -51,6 +56,7 @@ public class CommentsActivity extends ActionBarActivity {
         ButterKnife.inject(this);
         setupToolbar();
         setupComments();
+        setupSendCommentButton();
 
         mDrawingStartLocation = getIntent().getIntExtra(ARG_DRAWING_START_LOCATION, 0);
         if (savedInstanceState == null) {
@@ -89,6 +95,10 @@ public class CommentsActivity extends ActionBarActivity {
         });
     }
 
+    private void setupSendCommentButton() {
+        btnSendComment.setOnSendClickListener(this);
+    }
+
     /**
      * lv开始动画
      */
@@ -97,7 +107,7 @@ public class CommentsActivity extends ActionBarActivity {
         ViewCompat.setElevation(mToolbarTl, 0);
         mContentRootLl.setScaleY(0.1f);
         mContentRootLl.setPivotY(mDrawingStartLocation);
-        mAddCommentLl.setTranslationY(100);
+        mAddCommentLl.setTranslationY(200);
         mContentRootLl.animate()
                 .scaleY(1)
                 .setDuration(200)
@@ -128,13 +138,24 @@ public class CommentsActivity extends ActionBarActivity {
         return true;
     }
 
-    @OnClick(R.id.btnSendComment)
-    public void onSendCommentClick() {
-        mCommentContentEt.setText("");
-        mCommentsAdapter.addItem();
-        mCommentsAdapter.setAnimationsLocked(false);
-        mCommentsAdapter.setDelayEnterAnimation(false);
-        mCommentsRv.smoothScrollBy(0, mCommentsRv.getChildAt(0).getHeight() * mCommentsAdapter.getItemCount());
+    @Override
+    public void onSendClickListener(View v) {
+        if (validateComment()) {
+            mCommentContentEt.setText(null);
+            mCommentsAdapter.addItem();
+            mCommentsAdapter.setAnimationsLocked(false);
+            mCommentsAdapter.setDelayEnterAnimation(false);
+            mCommentsRv.smoothScrollBy(0, mCommentsRv.getChildAt(0).getHeight() * mCommentsAdapter.getItemCount());
+            btnSendComment.setCurrentState(SendCommentButton.STATE_DONE);
+        }
+    }
+
+    private boolean validateComment() {
+        if (TextUtils.isEmpty(mCommentContentEt.getText())) {
+            btnSendComment.startAnimation(AnimationUtils.loadAnimation(this, R.anim.shake_error));
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -152,4 +173,5 @@ public class CommentsActivity extends ActionBarActivity {
             }
         });
     }
+
 }
