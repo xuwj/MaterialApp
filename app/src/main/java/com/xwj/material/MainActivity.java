@@ -19,11 +19,13 @@ import android.widget.ImageView;
 import com.xwj.material.adapters.FeedAdapter;
 import com.xwj.material.component.Constants;
 import com.xwj.material.utils.PhoneUtils;
+import com.xwj.material.views.FeedContextMenu;
+import com.xwj.material.views.FeedContextMenuManager;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
-public class MainActivity extends ActionBarActivity implements FeedAdapter.OnFeedItemClickListener {
+public class MainActivity extends ActionBarActivity implements FeedAdapter.OnFeedItemClickListener, FeedContextMenu.OnFeedContextMenuItemClickListener {
     @InjectView(R.id.toolbar)
     Toolbar mToolbar;
     @InjectView(R.id.ivLogo)
@@ -74,6 +76,12 @@ public class MainActivity extends ActionBarActivity implements FeedAdapter.OnFee
         feedAdapter = new FeedAdapter(this);
         feedAdapter.setOnFeedItemClickListener(this);
         mFeedRv.setAdapter(feedAdapter);
+        mFeedRv.setOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                FeedContextMenuManager.getInstance().onScrolled(recyclerView, dx, dy);
+            }
+        });
     }
 
     @Override
@@ -152,5 +160,30 @@ public class MainActivity extends ActionBarActivity implements FeedAdapter.OnFee
         startActivity(intent);
         //屏蔽了MainActivity的退出效果，以及CommentsActivity的进入效果。
         overridePendingTransition(0, 0);
+    }
+
+    @Override
+    public void onMoreClick(View v, int position) {
+        FeedContextMenuManager.getInstance().toggleContextMenuFromView(v, position, this);
+    }
+
+    @Override
+    public void onReportClick(int feedItem) {
+        FeedContextMenuManager.getInstance().hideContextMenu();
+    }
+
+    @Override
+    public void onSharePhotoClick(int feedItem) {
+        FeedContextMenuManager.getInstance().hideContextMenu();
+    }
+
+    @Override
+    public void onCopyShareUrlClick(int feedItem) {
+        FeedContextMenuManager.getInstance().hideContextMenu();
+    }
+
+    @Override
+    public void onCancelClick(int feedItem) {
+        FeedContextMenuManager.getInstance().hideContextMenu();
     }
 }
